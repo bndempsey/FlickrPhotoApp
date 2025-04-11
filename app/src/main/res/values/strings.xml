@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FlickrPhotoApp</string>
     <string name="placeholder_search">Search</string>
+    <string name="error_occurred">An error has occurred</string>
 </resources>
