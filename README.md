@@ -1,2 +1,3 @@
 # FlickrPhotoApp
-Simple app for displaying photos from Flickr
+# Simple app for displaying photos from Flickr
+# Author: Benjamin Dempsey
