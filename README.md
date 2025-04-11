@@ -7,3 +7,4 @@
 - The Coil library also handles caching of loaded images for me
 - Error handling is with a simple try/catch block. In production this should instead be able to handle different kinds of errors.
 - Image Details screen occasionally causes the app to crash, this is because the compose navigation improperly handles the url provided by Flickr
+- In production the API key should come from a local file that is not uploaded to the repository
