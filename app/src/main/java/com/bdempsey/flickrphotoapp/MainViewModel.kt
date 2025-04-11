@@ -31,7 +31,9 @@ class MainViewModel : ViewModel() {
                         else FlickrApi.apiService.fetchImages(search)
                     val imagesList = searchResponse.photos.photo.map { image ->
                         FlickrImage(
-                            url = "https://live.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg"
+                            id = image.id,
+                            url = "https://live.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg",
+                            title = image.title
                         )
                     }
                     _isLoading.postValue(false)

@@ -2,4 +2,6 @@
     <string name="app_name">FlickrPhotoApp</string>
     <string name="placeholder_search">Search</string>
     <string name="error_occurred">An error has occurred</string>
+    <string name="image_id">Image ID:</string>
+    <string name="image_title">Image Title:</string>
 </resources>

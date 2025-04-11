@@ -1,5 +1,7 @@
 package com.bdempsey.flickrphotoapp.data
 
 data class FlickrImage(
-    val url: String
+    val id: String,
+    val url: String,
+    val title: String
 )

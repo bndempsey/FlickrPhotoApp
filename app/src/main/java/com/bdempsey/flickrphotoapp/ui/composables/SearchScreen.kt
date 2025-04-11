@@ -1,5 +1,6 @@
 package com.bdempsey.flickrphotoapp.ui.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -42,21 +42,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.bdempsey.flickrphotoapp.MainViewModel
 import com.bdempsey.flickrphotoapp.R
 import com.bdempsey.flickrphotoapp.data.FlickrImage
-import com.bdempsey.flickrphotoapp.ui.theme.FlickrPhotoAppTheme
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel = viewModel(),
+    navController: NavController
 ) {
     val flickrImages = mainViewModel.flickerImages.observeAsState(emptyList())
     val isLoading = mainViewModel.isLoading.observeAsState(true)
@@ -81,7 +82,8 @@ fun SearchScreen(
             SearchBar(onSearch = { searchString -> mainViewModel.searchImages(searchString) })
             ImagesGrid(
                 isLoading = isLoading.value,
-                imageItems = flickrImages.value
+                imageItems = flickrImages.value,
+                navController = navController
             )
         }
     }
@@ -124,6 +126,7 @@ fun SearchBar(
 fun ImagesGrid(
     isLoading: Boolean,
     imageItems: List<FlickrImage>,
+    navController: NavController
 ) {
     if (isLoading) {
         Box(
@@ -145,28 +148,22 @@ fun ImagesGrid(
             modifier = Modifier.fillMaxSize()
         ) {
             items(imageItems) { item ->
-                FlickrImageComposable(item.url)
+                FlickrImageComposable(item, navController)
             }
         }
     }
 }
 
 @Composable
-fun FlickrImageComposable(url: String) {
+fun FlickrImageComposable(item: FlickrImage, navController: NavController) {
+    val encodedUrl = URLEncoder.encode(item.url, StandardCharsets.UTF_8.toString())
     AsyncImage(
-        model = url,
+        model = item.url,
         contentDescription = null,
         modifier = Modifier
             .fillMaxSize()
-            .aspectRatio(1f),
-        contentScale = ContentScale.Crop
+            .aspectRatio(1f)
+            .clickable { navController.navigate("imageDetails/${item.title}/${item.id}/$encodedUrl") },
+        contentScale = ContentScale.Crop,
     )
-}
-
-@Preview
-@Composable
-fun ScreenPreview() {
-    FlickrPhotoAppTheme {
-        SearchScreen()
-    }
 }
