@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import util.Constants.Companion.FLICKR_API_KEY
 import java.util.concurrent.TimeUnit
 
@@ -39,8 +40,8 @@ object FlickrApi {
 }
 
 interface ApiService {
-    @GET("?method=flickr.photos.search&api_key=$FLICKR_API_KEY&text={searchString}&format=json&nojsoncallback=1")
-    suspend fun fetchImages(@Path("searchString") searchString: String): ImageSearchResponse
+    @GET("?method=flickr.photos.search&api_key=$FLICKR_API_KEY&format=json&nojsoncallback=1")
+    suspend fun fetchImages(@Query("text") searchString: String): ImageSearchResponse
 
     @GET("?method=flickr.photos.getRecent&api_key=$FLICKR_API_KEY&format=json&nojsoncallback=1")
     suspend fun fetchRecentImages(): ImageSearchResponse
